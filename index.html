@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Cinta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background: linear-gradient(to bottom, #ffcce7, #d9b3ff);
+            color: #5a005a;
+        }
+        .question-box {
+            max-width: 600px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid #e6a9f0;
+            border-radius: 15px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .question-box:before {
+            content: '💖';
+            position: absolute;
+            top: -30px;
+            left: -30px;
+            font-size: 80px;
+            color: rgba(255, 192, 203, 0.4);
+            animation: float 4s infinite;
+        }
+        .question-box:after {
+            content: '💜';
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            font-size: 80px;
+            color: rgba(216, 191, 216, 0.4);
+            animation: float 4s infinite reverse;
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(15px);
+            }
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #e6a9f0;
+            border-radius: 5px;
+            background-color: #ffe6f2;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff80bf;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #d966a3;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        @media (max-width: 480px) {
+            .question-box {
+                padding: 15px;
+                border-width: 1px;
+            }
+            button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+            input[type="text"] {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="question-box">
+        <h1>💞 Game Cinta 💞</h1>
+        <p id="question">Pertanyaan atau perintah akan muncul di sini.</p>
+        <input type="text" id="answer" placeholder="Ketik jawaban Anda di sini" />
+        <button id="nextBtn" disabled>Lanjutkan</button>
+    </div>
+    <iframe id="backgroundMusic" style="display:none;" src="https://www.youtube.com/embed/0NMZVR4TaDk?autoplay=1&loop=1&playlist=0NMZVR4TaDk" frameborder="0" allow="autoplay"></iframe>
+
+    <script>
+        const questions = [
+            {
+                type: 'question',
+                content: 'Apa hal terbesar yang kamu pelajari dari hubungan kita sejauh ini? 💖',
+            },
+            {
+                type: 'command',
+                content: 'Apakah ada sesuatu tentangku yang belum kamu ungkapkan?',
+            },
+            {
+                type: 'question',
+                content: 'Kapan pertama kali kamu bertemu pasanganmu? 💜',
+            },
+
+            {
+                type: 'command',
+                content: 'Tulis pesan cinta singkat untukku dan bacakan dengan penuh perasaan. ✍️💕',
+            },
+            {
+                type: 'question',
+                content: 'Apa momen pertama kali kamu merasa jatuh cinta padaku? ❤️',
+            },
+
+            {
+                type: 'command',
+                content: 'Ceritakan satu hal manis tentang kita yang selalu membuatmu tersenyum. 😊💖',
+            },
+            {
+                type: 'question',
+                content: 'Apa arti cinta untukmu saat bersama aku? 💌',
+            },
+
+            {
+                type: 'command',
+                content: 'Berikan aku pap ketek sekarang juga! 🤗❤️',
+            },
+            {
+                type: 'question',
+                content: 'Kalau kamu bisa memberi pesan kepada dirimu yang lebih muda, apa yang akan kamu katakan tentang cinta?',
+            },
+
+            {
+                type: 'command',
+                content: 'Berikan aku pap full body kamu sekarang juga! 🤗❤️',
+            },
+            {
+                type: 'question',
+                content: 'Apa arti diriku dalam hidupmu?',
+            },
+
+            {
+                type: 'command',
+                content: 'Berikan aku pap juling sambil melet kamu sekarang juga! 🤗❤️',
+                content: '',
+            },
+            {
+                type: 'question',
+                content: 'Apa yang membuatmu yakin bahwa aku adalah orang yang tepat untukmu?',
+            },
+
+            {
+                type: 'command',
+                content: 'Wajib bikin vidio random sekarang juga! 🤗❤️',
+            },
+            {
+                type: 'question',
+                content: 'Apa momen dalam hidupmu yang paling memengaruhi caramu mencintai seseorang?',
+            },
+
+            {
+                type: 'command',
+                content: 'Wajib pap hp di atas kepala sekarang juga! 🤗❤️',
+            },
+            {
+                type: 'question',
+                content: 'Kalau kamu bisa memberi pesan kepada dirimu yang lebih muda, apa yang akan kamu katakan tentang cinta?',
+            },
+
+            {
+                type: 'command',
+                content: 'Wajib teriak tapi mingkem',
+            },
+            {
+                type: 'question',
+                content: 'Apa pengalaman masa lalu yang membuatmu takut dalam hubungan?',
+            },
+        ];
+
+        let currentStep = 0;
+        const questionElement = document.getElementById('question');
+        const answerInput = document.getElementById('answer');
+        const nextButton = document.getElementById('nextBtn');
+
+        function loadStep() {
+            const step = questions[currentStep];
+            questionElement.textContent = step.content;
+            answerInput.value = '';
+            nextButton.disabled = step.type === 'command';
+
+            if (step.type === 'command') {
+                const whatsappLink = `https://wa.me/62085212637719?text=${encodeURIComponent(step.content)}`;
+                window.open(whatsappLink, '_blank');
+            }
+        }
+
+        answerInput.addEventListener('input', () => {
+            nextButton.disabled = answerInput.value.trim() === '';
+        });
+
+        nextButton.addEventListener('click', () => {
+            currentStep++;
+            if (currentStep < questions.length) {
+                loadStep();
+            } else {
+                questionElement.textContent = '💖 Selamat! Anda telah menyelesaikan game cinta ini. 💖';
+                answerInput.style.display = 'none';
+                nextButton.style.display = 'none';
+            }
+        });
+
+        loadStep();
+    </script>
+</body>
+</html>
